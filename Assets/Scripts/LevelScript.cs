@@ -6,6 +6,7 @@ public class LevelScript : MonoBehaviour {
 
 	public Transform Planet;
 	public Transform Meteor;
+	public Transform Sun;
 	public Transform Golfball;
 	public Transform Background;
 
@@ -18,6 +19,12 @@ public class LevelScript : MonoBehaviour {
 		planets.parent = transform;
 		List<Bounds> bounds = new List<Bounds>();
 
+		
+		Transform sun = Instantiate (Sun) as Transform;
+		sun.parent = planets;
+		SetPlanet (sun);
+		bounds.Add (sun.collider2D.bounds);
+
 		for (int i = 0; i < 5; i++) {
 			Transform planet = Instantiate(Planet) as Transform;
 			planet.parent = planets;
@@ -26,12 +33,11 @@ public class LevelScript : MonoBehaviour {
 			if (i == 0) {
 				planet.GetComponent<PlanetScript>().hasFlag = true;
 				planet.GetComponent<PlanetScript>().flagAngle = Random.value * 360;
-			} else {
-				for (int j = 0; j < bounds.Count; j++) {
-					while (planet.collider2D.bounds.Intersects(bounds[j])) {
-						SetPlanet (planet);
-						j = 0;
-					}
+			}
+			for (int j = 0; j < bounds.Count; j++) {
+				while (planet.collider2D.bounds.Intersects(bounds[j])) {
+					SetPlanet (planet);
+					j = 0;
 				}
 			}
 
@@ -59,7 +65,7 @@ public class LevelScript : MonoBehaviour {
 		golfball.parent = transform;
 		golfball.GetComponent<GravityScript> ().planets = planets;
 		golfball.GetComponent<BallScript> ().UI = GameObject.Find ("Canvas").transform;
-		golfball.transform.position = new Vector3 (6, 6, 0);
+		golfball.transform.localPosition = new Vector3 (3, 3, 0);
 
 		Instantiate (Background);
 	}
@@ -75,6 +81,7 @@ public class LevelScript : MonoBehaviour {
 		meteor.position = Random.insideUnitCircle * 4;
 		float size = Random.value * 2 + 1;
 		meteor.localScale = new Vector3(size, size, 1);
+		meteor.eulerAngles = new Vector3 (0, 0, Random.value * 360);
 	}
 	
 	void Update () {

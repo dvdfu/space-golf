@@ -9,11 +9,8 @@ public class BallScript : MonoBehaviour {
 
 	private Transform player;
 	private Transform line;
-	private bool halted = false;
-	private bool grounded = false;
 	private Vector2 anchor;
 	private Vector2 dist;
-	private float airTime = 0;
 	private Vector3 respawn;
 
 	void Start () {
@@ -25,41 +22,27 @@ public class BallScript : MonoBehaviour {
 	}
 
 	void Update () {
-		if (grounded) {
-			if (rigidbody2D.velocity.magnitude < 0.1) {
-				Halt ();
-			}
-		} else {
-			airTime += Time.deltaTime;
-			if (airTime > 5) {
-				// reset TODO
-			}
-		}
-
 		if (transform.position.x * transform.position.x + transform.position.x * transform.position.x > 100) {
-			transform.position = respawn;
+			Reset();
 		}
 		
 		SetLineLength(0);
-		if (halted) {
-			if (anchor != Vector2.zero) {
-				Vector2 mouse = Input.mousePosition;
-				dist = mouse - anchor;
-				if (Input.GetMouseButtonUp (0)) {
-					Hit ();
-					if (UI != null) {
-						UI.GetComponent<UIScript>().Stroke();
-					}
-					rigidbody2D.AddForce(-dist*hitForce);
-					anchor = Vector2.zero;
+		if (anchor != Vector2.zero) {
+			Vector2 mouse = Input.mousePosition;
+			dist = mouse - anchor;
+			if (Input.GetMouseButtonUp (0)) {
+				if (UI != null) {
+					UI.GetComponent<UIScript>().Stroke();
 				}
-
-				SetLineLength(dist.magnitude);
-				line.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(-dist.y, -dist.x) * 180 / Mathf.PI);
-
-			} else if (Input.GetMouseButtonDown (0)) {
-				anchor = Input.mousePosition;
+				rigidbody2D.AddForce(-dist*hitForce);
+				anchor = Vector2.zero;
 			}
+
+			SetLineLength(dist.magnitude);
+			line.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(-dist.y, -dist.x) * 180 / Mathf.PI);
+
+		} else if (Input.GetMouseButtonDown (0)) {
+			anchor = Input.mousePosition;
 		}
 	}
 
@@ -69,15 +52,8 @@ public class BallScript : MonoBehaviour {
 			player.GetComponent<RotateScript> ().planet = col.gameObject.transform;
 			float angle = Mathf.Atan2 (transform.position.y - col.gameObject.transform.position.y, transform.position.x - col.gameObject.transform.position.x);
 			player.GetComponent<RotateScript> ().angle = angle * 180 / Mathf.PI + 5;
-			grounded = true;
-		} else if (col.gameObject.name == "Sun") {
-			transform.position = respawn;
-		}
-	}
-	
-	void OnCollisionExit2D (Collision2D col) {
-		if (col.gameObject.name == "Planet" || col.gameObject.name == "Planet(Clone)") {
-			grounded = false;
+		} else if (col.gameObject.name == "Sun" || col.gameObject.name == "Sun(Clone)") {
+			Reset();
 		}
 	}
 
@@ -87,14 +63,8 @@ public class BallScript : MonoBehaviour {
 		line.localScale = lineScale;
 	}
 
-	void Halt() {
-		halted = true;
-		// GetComponent<GravityScript> ().enabled = false;
-	}
-
-	void Hit() {
-		halted = false;
-		// GetComponent<GravityScript> ().enabled = true;
-		grounded = false;
+	void Reset() {
+		transform.position = respawn;
+		rigidbody2D.velocity = Vector2.zero;
 	}
 }

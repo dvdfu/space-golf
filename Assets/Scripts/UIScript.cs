@@ -5,6 +5,7 @@ using System.Collections;
 public class UIScript : MonoBehaviour {
 
 	public Text strokes;
+	public Text distance;
 	private int strokesNum;
 
 	void Start () {

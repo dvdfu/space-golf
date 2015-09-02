@@ -2,8 +2,11 @@
 using System.Collections;
 
 public class PlanetScript : MonoBehaviour {
+	public Sprite SandPlanet;
+	public Sprite GrassPlanet;
 	public Transform terrain;
 	public Transform flag;
+	public string type;
 
 	public bool hasFlag = false;
 	public float flagAngle = 0;
