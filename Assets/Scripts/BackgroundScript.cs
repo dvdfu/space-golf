@@ -3,13 +3,14 @@ using System.Collections;
 
 public class BackgroundScript : MonoBehaviour {
 
-	public Transform sky;
+	public Transform Sky;
 
 	void Start () {
-		for (float x = -5; x < 5; x += 1.28f) {
-			for (float y = -5; y < 5; y += 1.28f) {
-				Transform s = Instantiate(sky, new Vector3 (x, y, 10), Quaternion.identity) as Transform;
+		for (float x = -5.12f; x < 5.12f; x += 1.28f) {
+			for (float y = -5.12f; y < 5.12f; y += 1.28f) {
+				Transform s = Instantiate(Sky) as Transform;
 				s.parent = transform;
+				s.localPosition = new Vector3(x, y, 0);
 			}
 		}
 	}

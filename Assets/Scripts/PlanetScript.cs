@@ -9,7 +9,7 @@ public class PlanetScript : MonoBehaviour {
 	public float flagAngle = 0;
 
 	void Start () {
-		float rad = Radius () + 0.02f;
+		float rad = Radius ();
 		if (terrain != null) {
 			for (float i = 0; i < Mathf.PI*2*rad; i += 0.24f) {
 				Transform g = Instantiate(terrain) as Transform;
@@ -28,7 +28,7 @@ public class PlanetScript : MonoBehaviour {
 	}
 
 	public float Radius() {
-		return 0.32f * transform.localScale.x;
+		return 0.32f * transform.localScale.x + 0.02f;
 	}
 
 	public void SetRadius(float r) {
