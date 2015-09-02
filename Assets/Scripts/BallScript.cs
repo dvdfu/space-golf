@@ -21,7 +21,7 @@ public class BallScript : MonoBehaviour {
 			}
 		}
 		
-		SetLineLength(0)	;
+		SetLineLength(0);
 		if (halted) {
 			if (anchor != Vector2.zero) {
 				Vector2 mouse = Input.mousePosition;
@@ -61,12 +61,12 @@ public class BallScript : MonoBehaviour {
 
 	void Halt() {
 		halted = true;
-//		GetComponent<GravityScript> ().enabled = false;
+		// GetComponent<GravityScript> ().enabled = false;
 	}
 
 	void Hit() {
 		halted = false;
-//		GetComponent<GravityScript> ().enabled = true;
+		// GetComponent<GravityScript> ().enabled = true;
 		grounded = false;
 	}
 }
