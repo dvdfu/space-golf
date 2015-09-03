@@ -71,11 +71,8 @@ public class BallScript : MonoBehaviour {
 			float angle = Mathf.Atan2 (transform.position.y - col.gameObject.transform.position.y, transform.position.x - col.gameObject.transform.position.x);
 			player.GetComponent<RotateScript> ().angle = angle * 180 / Mathf.PI + 5;
 		} else if (col.gameObject.name == "Sun" || col.gameObject.name == "Sun(Clone)") {
-//			Transform e = Instantiate(Explosion) as Transform;
-//			e.position = transform.position;
-			// TODO
 			explosion.position = transform.position;
-			explosion.particleSystem.Emit(30);
+			explosion.particleSystem.Emit(90);
 			Reset();
 		}
 	}

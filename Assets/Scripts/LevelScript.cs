@@ -88,7 +88,7 @@ public class LevelScript : MonoBehaviour {
 		golfball.parent = transform;
 		golfball.GetComponent<GravityScript> ().planets = planets;
 		golfball.GetComponent<BallScript> ().UI = GameObject.Find ("Canvas").transform;
-		golfball.transform.localPosition = new Vector3 (3, 3, -1);
+		golfball.transform.localPosition = new Vector3 (7, 7, -1);
 		golfball.GetComponent<BallScript> ().flag = flag;
 
 		camera = Instantiate (CameraController) as Transform;
@@ -103,14 +103,14 @@ public class LevelScript : MonoBehaviour {
 	}
 
 	private void SetPlanet(Transform planet) {
-		Vector3 pos = Random.insideUnitCircle * 4;
+		Vector3 pos = Random.insideUnitCircle * 6;
 		pos.z = 1;
 		planet.position = pos;
 		planet.GetComponent<PlanetScript>().SetRadius(Random.value * 3 + 1);
 	}
 	
 	private void SetMeteor(Transform meteor) {
-		meteor.position = Random.insideUnitCircle * 4;
+		meteor.position = Random.insideUnitCircle * 6;
 		float size = Random.Range(0.5f, 1.5f);
 		meteor.localScale = new Vector3(size, size, 1);
 		meteor.eulerAngles = new Vector3 (0, 0, Random.value * 360);
