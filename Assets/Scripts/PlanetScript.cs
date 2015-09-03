@@ -36,7 +36,7 @@ public class PlanetScript : MonoBehaviour {
 	}
 
 	public float Radius() {
-		return 0.32f * transform.localScale.x + 0.02f;
+		return 0.32f * transform.localScale.x + 0.025f;
 	}
 
 	public void SetRadius(float r) {

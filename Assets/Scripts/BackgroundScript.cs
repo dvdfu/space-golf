@@ -18,6 +18,7 @@ public class BackgroundScript : MonoBehaviour {
 		} else {
 			sky = Sky2;
 			transform.position = new Vector3 (0, 0, 5);
+			size = 2.56f;
 		}
 		for (int x = -n; x < n; x++) {
 			for (int y = -n; y < n; y++) {

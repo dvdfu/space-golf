@@ -15,7 +15,7 @@ public class LevelScript : MonoBehaviour {
 	public float numMeteors = 3;
 	public float numSuns = 1;
 
-	private Transform camera;
+	private Transform cam;
 	private Transform planets;
 	private Transform meteors;
 	private Transform golfball;
@@ -91,14 +91,14 @@ public class LevelScript : MonoBehaviour {
 		golfball.transform.localPosition = new Vector3 (7, 7, -1);
 		golfball.GetComponent<BallScript> ().flag = flag;
 
-		camera = Instantiate (CameraController) as Transform;
-		camera.GetComponent<CameraScript> ().golfball = golfball;
+		cam = Instantiate (CameraController) as Transform;
+		cam.GetComponent<CameraScript> ().golfball = golfball;
 		Transform bg1 = Instantiate (Background) as Transform;
 		bg1.GetComponent<BackgroundScript> ().type = 1;
-		camera.GetComponent<CameraScript> ().background1 = bg1;
+		cam.GetComponent<CameraScript> ().background1 = bg1;
 		Transform bg2 = Instantiate (Background) as Transform;
 		bg2.GetComponent<BackgroundScript> ().type = 2;
-		camera.GetComponent<CameraScript> ().background2 = bg2;
+		cam.GetComponent<CameraScript> ().background2 = bg2;
 
 	}
 

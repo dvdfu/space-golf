@@ -8,6 +8,7 @@ public class BallScript : MonoBehaviour {
 	public Transform flag;
 	public Transform Explosion;
 	public float hitForce = 2;
+	public float distToFlag;
 
 	private Transform player;
 	private Transform line;
@@ -26,8 +27,8 @@ public class BallScript : MonoBehaviour {
 	}
 
 	void Update () {
-		float distance = ((Vector2)(flag.position - transform.position)).magnitude * 10;
-		UI.GetComponent<UIScript> ().SetDistance (distance);
+		distToFlag = ((Vector2)(flag.position - transform.position)).magnitude * 10;
+		UI.GetComponent<UIScript> ().SetDistance (distToFlag);
 
 		if (transform.position.magnitude > 10) {
 			Reset();
@@ -35,7 +36,7 @@ public class BallScript : MonoBehaviour {
 
 		
 		if (rigidbody2D.velocity.magnitude < 5) {
-			if (distance < 1) {
+			if (distToFlag < 1) {
 				Application.LoadLevel (Application.loadedLevel);
 			}
 		}

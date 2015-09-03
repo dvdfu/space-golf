@@ -17,6 +17,9 @@ public class CameraScript : MonoBehaviour {
 		diff /= 20;
 		transform.Translate (diff);
 
+		float d = golfball.GetComponent<BallScript>().distToFlag;
+		GetComponentInChildren<Camera> ().orthographicSize = d / 30 + 2;
+
 		background1.Translate (diff / 2);
 		background2.Translate (diff / 4);
 		oldPos = transform.position;
