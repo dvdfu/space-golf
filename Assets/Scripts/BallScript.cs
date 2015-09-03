@@ -23,9 +23,18 @@ public class BallScript : MonoBehaviour {
 	}
 
 	void Update () {
-		UI.GetComponent<UIScript> ().SetDistance ((flag.position - transform.position).magnitude * 10);
+		float distance = ((Vector2)(flag.position - transform.position)).magnitude * 10;
+		UI.GetComponent<UIScript> ().SetDistance (distance);
+
 		if (transform.position.magnitude > 20) {
 			Reset();
+		}
+
+		
+		if (rigidbody2D.velocity.magnitude < 5) {
+			if (distance < 1) {
+				Application.LoadLevel (Application.loadedLevel);
+			}
 		}
 		
 		SetLineLength(0);

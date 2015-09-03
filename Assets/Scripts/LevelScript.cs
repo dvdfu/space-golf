@@ -31,6 +31,11 @@ public class LevelScript : MonoBehaviour {
 		for (int i = 0; i < 5; i++) {
 			Transform planet = Instantiate(Planet) as Transform;
 			planet.parent = planets;
+			if (Random.value < 0.5) {
+				planet.GetComponent<PlanetScript>().type = "Grass";
+			} else {
+				planet.GetComponent<PlanetScript>().type = "Sand";
+			}
 			SetPlanet (planet);
 
 			if (i == 0) {
@@ -68,8 +73,11 @@ public class LevelScript : MonoBehaviour {
 		golfball.parent = transform;
 		golfball.GetComponent<GravityScript> ().planets = planets;
 		golfball.GetComponent<BallScript> ().UI = GameObject.Find ("Canvas").transform;
-		golfball.transform.localPosition = new Vector3 (3, 3, 0);
+		golfball.transform.localPosition = new Vector3 (3, 3, -1);
 		golfball.GetComponent<BallScript> ().flag = flag;
+
+		FindObjectOfType<Camera>().transform.parent = golfball;
+		FindObjectOfType<Camera> ().transform.localPosition = new Vector3 (0, 0, -10);
 
 		Instantiate (Background);
 	}
