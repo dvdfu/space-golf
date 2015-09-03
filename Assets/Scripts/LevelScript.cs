@@ -9,6 +9,7 @@ public class LevelScript : MonoBehaviour {
 	public Transform Sun;
 	public Transform Golfball;
 	public Transform Background;
+	public Transform Flag;
 
 	private Transform planets;
 	private Transform meteors;
@@ -17,6 +18,7 @@ public class LevelScript : MonoBehaviour {
 	void Start () {
 		planets = new GameObject ("Planets").transform;
 		planets.parent = transform;
+		planets.position = new Vector3 (0, 0, 1);
 		List<Bounds> bounds = new List<Bounds>();
 
 		
@@ -24,6 +26,7 @@ public class LevelScript : MonoBehaviour {
 		sun.parent = planets;
 		SetPlanet (sun);
 		bounds.Add (sun.collider2D.bounds);
+		Transform flag = Instantiate (Flag) as Transform;
 
 		for (int i = 0; i < 5; i++) {
 			Transform planet = Instantiate(Planet) as Transform;
@@ -31,8 +34,8 @@ public class LevelScript : MonoBehaviour {
 			SetPlanet (planet);
 
 			if (i == 0) {
-				planet.GetComponent<PlanetScript>().hasFlag = true;
-				planet.GetComponent<PlanetScript>().flagAngle = Random.value * 360;
+				flag.GetComponent<RotateScript>().planet = planet;
+				flag.GetComponent<RotateScript>().angle = Random.value * 360;
 			}
 			for (int j = 0; j < bounds.Count; j++) {
 				while (planet.collider2D.bounds.Intersects(bounds[j])) {
@@ -66,6 +69,7 @@ public class LevelScript : MonoBehaviour {
 		golfball.GetComponent<GravityScript> ().planets = planets;
 		golfball.GetComponent<BallScript> ().UI = GameObject.Find ("Canvas").transform;
 		golfball.transform.localPosition = new Vector3 (3, 3, 0);
+		golfball.GetComponent<BallScript> ().flag = flag;
 
 		Instantiate (Background);
 	}

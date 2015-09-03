@@ -17,4 +17,8 @@ public class UIScript : MonoBehaviour {
 		strokesNum += 1;
 		strokes.text = "Strokes: " + strokesNum;
 	}
+
+	public void SetDistance(float d) {
+		distance.text = "Distance: " + d.ToString("0.00") + "m";
+	}
 }
