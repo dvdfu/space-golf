@@ -6,10 +6,12 @@ public class BallScript : MonoBehaviour {
 	public Transform Line;
 	public Transform UI;
 	public Transform flag;
+	public Transform Explosion;
 	public float hitForce = 2;
 
 	private Transform player;
 	private Transform line;
+	private Transform explosion;
 	private Vector2 anchor;
 	private Vector2 dist;
 	private Vector3 respawn;
@@ -20,13 +22,14 @@ public class BallScript : MonoBehaviour {
 		line = Instantiate (Line) as Transform;
 		line.parent = transform;
 		line.position = transform.position;
+		explosion = Instantiate (Explosion) as Transform;
 	}
 
 	void Update () {
 		float distance = ((Vector2)(flag.position - transform.position)).magnitude * 10;
 		UI.GetComponent<UIScript> ().SetDistance (distance);
 
-		if (transform.position.magnitude > 20) {
+		if (transform.position.magnitude > 10) {
 			Reset();
 		}
 
@@ -46,7 +49,7 @@ public class BallScript : MonoBehaviour {
 					if (UI != null) {
 						UI.GetComponent<UIScript>().Stroke();
 					}
-					rigidbody2D.AddForce(-dist*hitForce);
+					rigidbody2D.AddForce(-(dist*hitForce + dist.normalized*100));
 					anchor = Vector2.zero;
 				}
 				
@@ -68,6 +71,11 @@ public class BallScript : MonoBehaviour {
 			float angle = Mathf.Atan2 (transform.position.y - col.gameObject.transform.position.y, transform.position.x - col.gameObject.transform.position.x);
 			player.GetComponent<RotateScript> ().angle = angle * 180 / Mathf.PI + 5;
 		} else if (col.gameObject.name == "Sun" || col.gameObject.name == "Sun(Clone)") {
+//			Transform e = Instantiate(Explosion) as Transform;
+//			e.position = transform.position;
+			// TODO
+			explosion.position = transform.position;
+			explosion.particleSystem.Emit(30);
 			Reset();
 		}
 	}

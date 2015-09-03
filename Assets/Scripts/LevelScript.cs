@@ -4,13 +4,18 @@ using System.Collections.Generic;
 
 public class LevelScript : MonoBehaviour {
 
+	public Transform CameraController;
 	public Transform Planet;
 	public Transform Meteor;
 	public Transform Sun;
 	public Transform Golfball;
 	public Transform Background;
 	public Transform Flag;
+	public float numPlanets = 5;
+	public float numMeteors = 3;
+	public float numSuns = 1;
 
+	private Transform camera;
 	private Transform planets;
 	private Transform meteors;
 	private Transform golfball;
@@ -21,14 +26,24 @@ public class LevelScript : MonoBehaviour {
 		planets.position = new Vector3 (0, 0, 1);
 		List<Bounds> bounds = new List<Bounds>();
 
-		
-		Transform sun = Instantiate (Sun) as Transform;
-		sun.parent = planets;
-		SetPlanet (sun);
-		bounds.Add (sun.collider2D.bounds);
+		for (int i = 0; i < numSuns; i++) {
+			Transform sun = Instantiate (Sun) as Transform;
+			sun.parent = planets;
+			SetPlanet (sun);
+
+			for (int j = 0; j < bounds.Count; j++) {
+				while (sun.collider2D.bounds.Intersects(bounds[j])) {
+					SetPlanet (sun);
+					j = 0;
+				}
+			}
+
+			bounds.Add (sun.collider2D.bounds);
+		}
+
 		Transform flag = Instantiate (Flag) as Transform;
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < numPlanets; i++) {
 			Transform planet = Instantiate(Planet) as Transform;
 			planet.parent = planets;
 			if (Random.value < 0.5) {
@@ -54,7 +69,7 @@ public class LevelScript : MonoBehaviour {
 
 		meteors = new GameObject ("Meteors").transform;
 		meteors.parent = transform;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < numMeteors; i++) {
 			Transform meteor = Instantiate (Meteor) as Transform;
 			meteor.parent = meteors;
 			SetMeteor(meteor);
@@ -76,10 +91,15 @@ public class LevelScript : MonoBehaviour {
 		golfball.transform.localPosition = new Vector3 (3, 3, -1);
 		golfball.GetComponent<BallScript> ().flag = flag;
 
-		FindObjectOfType<Camera>().transform.parent = golfball;
-		FindObjectOfType<Camera> ().transform.localPosition = new Vector3 (0, 0, -10);
+		camera = Instantiate (CameraController) as Transform;
+		camera.GetComponent<CameraScript> ().golfball = golfball;
+		Transform bg1 = Instantiate (Background) as Transform;
+		bg1.GetComponent<BackgroundScript> ().type = 1;
+		camera.GetComponent<CameraScript> ().background1 = bg1;
+		Transform bg2 = Instantiate (Background) as Transform;
+		bg2.GetComponent<BackgroundScript> ().type = 2;
+		camera.GetComponent<CameraScript> ().background2 = bg2;
 
-		Instantiate (Background);
 	}
 
 	private void SetPlanet(Transform planet) {
@@ -91,7 +111,7 @@ public class LevelScript : MonoBehaviour {
 	
 	private void SetMeteor(Transform meteor) {
 		meteor.position = Random.insideUnitCircle * 4;
-		float size = Random.value * 2 + 1;
+		float size = Random.Range(0.5f, 1.5f);
 		meteor.localScale = new Vector3(size, size, 1);
 		meteor.eulerAngles = new Vector3 (0, 0, Random.value * 360);
 	}
