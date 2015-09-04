@@ -9,13 +9,14 @@ public class BallScript : MonoBehaviour {
 	public Transform Explosion;
 	public float hitForce = 2;
 	public float distToFlag;
+	public Transform ground;
 
 	private Transform player;
 	private Transform line;
 	private Transform explosion;
 	private Vector2 anchor;
 	private Vector2 dist;
-	private Vector3 respawn;
+	private float respawnAngle;
 
 	void Start () {
 		player = Instantiate (Golfer) as Transform;
@@ -33,9 +34,8 @@ public class BallScript : MonoBehaviour {
 		if (transform.position.magnitude > 10) {
 			Reset();
 		}
-
 		
-		if (rigidbody2D.velocity.magnitude < 5) {
+		if (rigidbody2D.velocity.magnitude < 2) {
 			if (distToFlag < 1) {
 				Application.LoadLevel (Application.loadedLevel);
 			}
@@ -43,11 +43,16 @@ public class BallScript : MonoBehaviour {
 		
 		SetLineLength(0);
 		if (rigidbody2D.velocity.magnitude < 0.1) {
+			if (player != null) {
+				player.GetComponent<RotateScript> ().planet = ground;
+				player.GetComponent<RotateScript> ().angle = ground.GetComponent<PlanetScript>().GetAngle(transform.position) + 10;
+			}
 			if (anchor != Vector2.zero) {
 				Vector2 mouse = Input.mousePosition;
 				dist = mouse - anchor;
 				if (Input.GetMouseButtonUp (0)) {
 					if (UI != null) {
+						player.GetComponent<PlayerScript>().Swing();
 						UI.GetComponent<UIScript>().Stroke();
 					}
 					rigidbody2D.AddForce(-(dist*hitForce + dist.normalized*100));
@@ -65,12 +70,8 @@ public class BallScript : MonoBehaviour {
 
 	void OnCollisionEnter2D (Collision2D col) {
 		if (col.gameObject.name == "Planet" || col.gameObject.name == "Planet(Clone)") {
-			respawn = transform.position;
-			if (player != null) {
-				player.GetComponent<RotateScript> ().planet = col.gameObject.transform;
-			}
-			float angle = Mathf.Atan2 (transform.position.y - col.gameObject.transform.position.y, transform.position.x - col.gameObject.transform.position.x);
-			player.GetComponent<RotateScript> ().angle = angle * 180 / Mathf.PI + 5;
+			respawnAngle = col.gameObject.GetComponent<PlanetScript>().GetAngle (transform.position);
+			ground = col.gameObject.transform;
 		} else if (col.gameObject.name == "Sun" || col.gameObject.name == "Sun(Clone)") {
 			explosion.position = transform.position;
 			explosion.particleSystem.Emit(90);
@@ -85,7 +86,7 @@ public class BallScript : MonoBehaviour {
 	}
 
 	void Reset() {
-		transform.position = respawn;
+		transform.position = ground.GetComponent<PlanetScript>().GetPoint(respawnAngle);
 		rigidbody2D.velocity = Vector2.zero;
 	}
 }

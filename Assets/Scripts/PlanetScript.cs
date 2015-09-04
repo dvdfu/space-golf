@@ -36,10 +36,22 @@ public class PlanetScript : MonoBehaviour {
 	}
 
 	public float Radius() {
-		return 0.32f * transform.localScale.x + 0.025f;
+		return 0.32f * transform.localScale.x + 0.02f;
 	}
 
 	public void SetRadius(float r) {
 		transform.localScale = new Vector3 (r, r, 1);
+	}
+	
+	public Vector3 GetPoint(float angle) {
+		Vector3 pos = transform.position;
+		pos.x += Radius () * Mathf.Cos (angle / 180 * Mathf.PI);
+		pos.y += Radius () * Mathf.Sin (angle / 180 * Mathf.PI);
+		return pos;
+	}
+
+	public float GetAngle(Vector3 position) {
+		Vector2 d = position - transform.position;
+		return Mathf.Atan2 (d.y, d.x) / Mathf.PI * 180;
 	}
 }

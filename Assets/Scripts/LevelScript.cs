@@ -42,6 +42,7 @@ public class LevelScript : MonoBehaviour {
 		}
 
 		Transform flag = Instantiate (Flag) as Transform;
+		golfball = Instantiate (Golfball) as Transform;
 
 		for (int i = 0; i < numPlanets; i++) {
 			Transform planet = Instantiate(Planet) as Transform;
@@ -52,11 +53,6 @@ public class LevelScript : MonoBehaviour {
 				planet.GetComponent<PlanetScript>().type = "Sand";
 			}
 			SetPlanet (planet);
-
-			if (i == 0) {
-				flag.GetComponent<RotateScript>().planet = planet;
-				flag.GetComponent<RotateScript>().angle = Random.value * 360;
-			}
 			for (int j = 0; j < bounds.Count; j++) {
 				while (planet.collider2D.bounds.Intersects(bounds[j])) {
 					SetPlanet (planet);
@@ -65,6 +61,14 @@ public class LevelScript : MonoBehaviour {
 			}
 
 			bounds.Add(planet.collider2D.bounds);
+			if (i == 0) {
+				planet.GetComponent<PlanetScript>().type = "Grass";
+				flag.GetComponent<RotateScript>().planet = planet;
+				flag.GetComponent<RotateScript>().angle = Random.value * 360;
+			} else if (i == numPlanets - 1) {
+				golfball.transform.localPosition = planet.GetComponent<PlanetScript>().GetPoint(0);
+				golfball.GetComponent<BallScript>().ground = planet;
+			}
 		}
 
 		meteors = new GameObject ("Meteors").transform;
@@ -84,11 +88,9 @@ public class LevelScript : MonoBehaviour {
 			bounds.Add(meteor.collider2D.bounds);
 		}
 
-		golfball = Instantiate (Golfball) as Transform;
 		golfball.parent = transform;
 		golfball.GetComponent<GravityScript> ().planets = planets;
 		golfball.GetComponent<BallScript> ().UI = GameObject.Find ("Canvas").transform;
-		golfball.transform.localPosition = new Vector3 (7, 7, -1);
 		golfball.GetComponent<BallScript> ().flag = flag;
 
 		cam = Instantiate (CameraController) as Transform;
@@ -106,7 +108,7 @@ public class LevelScript : MonoBehaviour {
 		Vector3 pos = Random.insideUnitCircle * 6;
 		pos.z = 1;
 		planet.position = pos;
-		planet.GetComponent<PlanetScript>().SetRadius(Random.value * 3 + 1);
+		planet.GetComponent<PlanetScript>().SetRadius(Random.value * 3 + 2);
 	}
 	
 	private void SetMeteor(Transform meteor) {
