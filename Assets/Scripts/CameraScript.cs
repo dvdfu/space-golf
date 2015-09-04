@@ -15,6 +15,7 @@ public class CameraScript : MonoBehaviour {
 	void Update () {
 		Vector3 diff = golfball.position - oldPos;
 		diff /= 20;
+		diff.z = 0;
 		transform.Translate (diff);
 
 		float d = golfball.GetComponent<BallScript>().distToFlag;

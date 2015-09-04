@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SunScript : MonoBehaviour {
+public class AuraScript : MonoBehaviour {
 
 	private ParticleSystem particles;
 
@@ -10,6 +10,6 @@ public class SunScript : MonoBehaviour {
 	}
 	
 	void Update () {
-		particles.startSize = transform.localScale.x + Random.value * 0.5f;
+		particles.startSize = transform.localScale.x + Random.value;
 	}
 }

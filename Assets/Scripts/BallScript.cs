@@ -31,7 +31,7 @@ public class BallScript : MonoBehaviour {
 		distToFlag = ((Vector2)(flag.position - transform.position)).magnitude * 10;
 		UI.GetComponent<UIScript> ().SetDistance (distToFlag);
 
-		if (transform.position.magnitude > 10) {
+		if (transform.position.magnitude > 15) {
 			Reset();
 		}
 		
@@ -74,7 +74,8 @@ public class BallScript : MonoBehaviour {
 			ground = col.gameObject.transform;
 		} else if (col.gameObject.name == "Sun" || col.gameObject.name == "Sun(Clone)") {
 			explosion.position = transform.position;
-			explosion.particleSystem.Emit(90);
+			explosion.particleSystem.Emit(60);
+			GetComponent<AudioSource>().Play ();
 			Reset();
 		}
 	}

@@ -25,6 +25,7 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	public void Swing() {
+		GetComponent<AudioSource> ().Play ();
 		swingTimer = 0.5f;
 		GetComponentsInChildren<SpriteRenderer> ()[1].enabled = true;
 		GetComponent<SpriteRenderer>().sprite = SwingSprite;

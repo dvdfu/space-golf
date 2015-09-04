@@ -29,7 +29,7 @@ public class LevelScript : MonoBehaviour {
 		for (int i = 0; i < numSuns; i++) {
 			Transform sun = Instantiate (Sun) as Transform;
 			sun.parent = planets;
-			SetPlanet (sun);
+			SetSun (sun);
 
 			for (int j = 0; j < bounds.Count; j++) {
 				while (sun.collider2D.bounds.Intersects(bounds[j])) {
@@ -92,6 +92,7 @@ public class LevelScript : MonoBehaviour {
 		golfball.GetComponent<GravityScript> ().planets = planets;
 		golfball.GetComponent<BallScript> ().UI = GameObject.Find ("Canvas").transform;
 		golfball.GetComponent<BallScript> ().flag = flag;
+		golfball.GetComponent<BallScript> ().UI.GetComponent<UIScript> ().flag = flag;
 
 		cam = Instantiate (CameraController) as Transform;
 		cam.GetComponent<CameraScript> ().golfball = golfball;
@@ -102,18 +103,27 @@ public class LevelScript : MonoBehaviour {
 		bg2.GetComponent<BackgroundScript> ().type = 2;
 		cam.GetComponent<CameraScript> ().background2 = bg2;
 
+		golfball.GetComponent<BallScript> ().UI.GetComponent<UIScript> ().cam = cam.GetComponentInChildren<Camera>();
+		golfball.GetComponent<BallScript> ().UI.GetComponent<Canvas>().worldCamera = cam.GetComponentInChildren<Camera>();
 	}
 
 	private void SetPlanet(Transform planet) {
-		Vector3 pos = Random.insideUnitCircle * 6;
+		Vector3 pos = Random.insideUnitCircle * 8;
 		pos.z = 1;
 		planet.position = pos;
-		planet.GetComponent<PlanetScript>().SetRadius(Random.value * 3 + 2);
+		planet.GetComponent<PlanetScript>().SetRadius(Random.Range(3, 5));
+	}
+	
+	private void SetSun(Transform sun) {
+		Vector3 pos = Random.insideUnitCircle * 8;
+		pos.z = 1;
+		sun.position = pos;
+		sun.GetComponent<PlanetScript>().SetRadius(Random.Range(5, 8));
 	}
 	
 	private void SetMeteor(Transform meteor) {
-		meteor.position = Random.insideUnitCircle * 6;
-		float size = Random.Range(0.5f, 1.5f);
+		meteor.position = Random.insideUnitCircle * 8;
+		float size = Random.Range(1, 3);
 		meteor.localScale = new Vector3(size, size, 1);
 		meteor.eulerAngles = new Vector3 (0, 0, Random.value * 360);
 	}
