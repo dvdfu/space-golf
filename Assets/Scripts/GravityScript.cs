@@ -19,6 +19,6 @@ public class GravityScript : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		rigidbody2D.AddForce (gravityForce);
+		GetComponent<Rigidbody2D>().AddForce (gravityForce);
 	}
 }

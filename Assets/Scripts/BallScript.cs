@@ -35,14 +35,14 @@ public class BallScript : MonoBehaviour {
 			Reset();
 		}
 		
-		if (rigidbody2D.velocity.magnitude < 2) {
+		if (GetComponent<Rigidbody2D>().velocity.magnitude < 2) {
 			if (distToFlag < 1) {
 				Application.LoadLevel (Application.loadedLevel);
 			}
 		}
 		
 		SetLineLength(0);
-		if (rigidbody2D.velocity.magnitude < 0.1) {
+		if (GetComponent<Rigidbody2D>().velocity.magnitude < 0.1) {
 			if (player != null) {
 				player.GetComponent<RotateScript> ().planet = ground;
 				player.GetComponent<RotateScript> ().angle = ground.GetComponent<PlanetScript>().GetAngle(transform.position) + 10;
@@ -55,7 +55,7 @@ public class BallScript : MonoBehaviour {
 						player.GetComponent<PlayerScript>().Swing();
 						UI.GetComponent<UIScript>().Stroke();
 					}
-					rigidbody2D.AddForce(-(dist*hitForce + dist.normalized*100));
+					GetComponent<Rigidbody2D>().AddForce(-(dist*hitForce + dist.normalized*100));
 					anchor = Vector2.zero;
 				}
 				
@@ -74,7 +74,7 @@ public class BallScript : MonoBehaviour {
 			ground = col.gameObject.transform;
 		} else if (col.gameObject.name == "Sun" || col.gameObject.name == "Sun(Clone)") {
 			explosion.position = transform.position;
-			explosion.particleSystem.Emit(60);
+			explosion.GetComponent<ParticleSystem>().Emit(60);
 			GetComponent<AudioSource>().Play ();
 			Reset();
 		}
@@ -88,6 +88,6 @@ public class BallScript : MonoBehaviour {
 
 	void Reset() {
 		transform.position = ground.GetComponent<PlanetScript>().GetPoint(respawnAngle);
-		rigidbody2D.velocity = Vector2.zero;
+		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 	}
 }

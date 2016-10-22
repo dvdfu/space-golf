@@ -32,13 +32,13 @@ public class LevelScript : MonoBehaviour {
 			SetSun (sun);
 
 			for (int j = 0; j < bounds.Count; j++) {
-				while (sun.collider2D.bounds.Intersects(bounds[j])) {
+				while (sun.GetComponent<Collider2D>().bounds.Intersects(bounds[j])) {
 					SetPlanet (sun);
 					j = 0;
 				}
 			}
 
-			bounds.Add (sun.collider2D.bounds);
+			bounds.Add (sun.GetComponent<Collider2D>().bounds);
 		}
 
 		Transform flag = Instantiate (Flag) as Transform;
@@ -54,13 +54,13 @@ public class LevelScript : MonoBehaviour {
 			}
 			SetPlanet (planet);
 			for (int j = 0; j < bounds.Count; j++) {
-				while (planet.collider2D.bounds.Intersects(bounds[j])) {
+				while (planet.GetComponent<Collider2D>().bounds.Intersects(bounds[j])) {
 					SetPlanet (planet);
 					j = 0;
 				}
 			}
 
-			bounds.Add(planet.collider2D.bounds);
+			bounds.Add(planet.GetComponent<Collider2D>().bounds);
 			if (i == 0) {
 				planet.GetComponent<PlanetScript>().type = "Grass";
 				flag.GetComponent<RotateScript>().planet = planet;
@@ -79,13 +79,13 @@ public class LevelScript : MonoBehaviour {
 			SetMeteor(meteor);
 
 			for (int j = 0; j < bounds.Count; j++) {
-				while (meteor.collider2D.bounds.Intersects(bounds[j])) {
+				while (meteor.GetComponent<Collider2D>().bounds.Intersects(bounds[j])) {
 					SetMeteor (meteor);
 					j = 0;
 				}
 			}
 
-			bounds.Add(meteor.collider2D.bounds);
+			bounds.Add(meteor.GetComponent<Collider2D>().bounds);
 		}
 
 		golfball.parent = transform;
